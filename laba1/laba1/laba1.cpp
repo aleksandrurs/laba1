@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <windows.h>
 using namespace std;
 struct pipeproperties {
 	string name;
@@ -21,20 +22,18 @@ struct stationproperties {
 		return name.empty() && allcex == 0 && workcex == 0 && specification==0;
 	}
 };
-pipeproperties createpipe() {
-	pipeproperties p;
-	cout << "Введите название трубы:";
+pipeproperties createpipe(pipeproperties p) {
+	cout << "Введите название трубы:" << endl;
 	cin >> p.name;
-	cout << "Введите длину трубы:";
+	cout << "Введите длину трубы:" << endl;
 	cin >> p.length;
-	cout << "Введите диаметр трубы:";
+	cout << "Введите диаметр трубы:" << endl;
 	cin >> p.diametr;
 	p.status = true;
 	/*bool vizov1 = true;*/
 	return p;
 }
-stationproperties createstation() {
-	stationproperties st;
+stationproperties createstation(stationproperties st) {
 	cout << "Введите название КС:";
 	cin >> st.name;
 	cout << "Введите количество цехов:";
@@ -46,7 +45,7 @@ stationproperties createstation() {
 	return st;
 }
 void print(const pipeproperties& p, const stationproperties& st) {
-	cout << "Ваша труба и КС:";
+	cout << "Ваша труба и КС:" << endl;
 	if (p.empty() && st.empty()) {
 		cout << "Вы не создавали труб и КС";
 	}			
@@ -76,21 +75,34 @@ stationproperties st;
 pipeproperties p;
 int main()
 {
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 	while (true) {
 		cout << "1) Добавить трубу" << endl;
 		cout << "2) Добавить КС" << endl;
 		cout << "3) Просмотр всех объектов" << endl;
 		cout << "4) Редактировать трубу" << endl;
-		cout << "Введите число от 0 до 7";
+		cout << "Введите число от 0 до 7" << endl;
 		int vvod;
 		cin >> vvod;
 		if (cin.good()) {
+			switch (vvod) {
+				case 1:
+					p = createpipe(p);
+					break;	
+				case 2:
+					st = createstation(st);	
+					break;
+				case 3: 
+					print(p, st);
+					break;
 
 			}
+		}
 		else {
 			cin.clear();
 			cin.ignore(10000000,'\n');
-			cout << "Вы ввели неправильный символ, введите число от 0 до 7";	
+			cout << "Вы ввели неправильный символ, введите число от 0 до 7" <<  endl;	
 			continue;
 		}
 	}
