@@ -23,7 +23,7 @@ struct stationproperties {
 	}
 };
 pipeproperties createpipe(pipeproperties p) {
-	cout << '\n' << "Введите название трубы:";
+	cout << "Введите название трубы:";
 	cin >> p.name;
 	cout << "Введите длину трубы:";
 	cin >> p.length;
@@ -35,11 +35,12 @@ pipeproperties createpipe(pipeproperties p) {
 	return p;
 }
 stationproperties createstation(stationproperties st) {
-	cout << '\n' << "Введите название КС:";
+	cout << "Введите название КС:";
 	cin >> st.name;
 	cout << "Введите количество цехов:";
 	cin >> st.allcex;
-	st.workcex = st.allcex;
+	cout << "Введите количество работающих цехов:";
+	cin >> st.workcex;
 	cout << "Введите класс станции:";
 	cin >> st.specification;
 	cout << "Данные успешно записаны" << '\n';
@@ -68,7 +69,7 @@ void print(const pipeproperties& p, const stationproperties& st) {
 		cout << "1) Название: " << st.name << endl;
 		cout << "2) Количество всех цехов: " << st.allcex << endl;
 		cout << "3) Количество рабочих цехов: " << st.workcex << endl;
-		cout << "4) Статус работы " << st.specification << endl;
+		cout << "4) Класс станции " << st.specification << endl;
 	}
 	else {
 		cout << "Вы не создали КС" << endl;
@@ -81,6 +82,7 @@ int main()
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 	while (true) {
+		cout << "---------------------------------------------------------------------------------";
 		cout << '\n' << "1) Добавить трубу" << endl;
 		cout << "2) Добавить КС" << endl;
 		cout << "3) Просмотр всех объектов" << endl;
@@ -89,6 +91,7 @@ int main()
 		int vvod;
 		cin >> vvod;
 		if (cin.good()) {
+			cout << "---------------------------------------------------------------------------------" << '\n';
 			switch (vvod) {
 				case 1:
 					p = createpipe(p);
