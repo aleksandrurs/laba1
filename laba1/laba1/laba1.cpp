@@ -23,52 +23,55 @@ struct stationproperties {
 	}
 };
 pipeproperties createpipe(pipeproperties p) {
-	cout << "Введите название трубы:" << endl;
+	cout << '\n' << "Введите название трубы:";
 	cin >> p.name;
-	cout << "Введите длину трубы:" << endl;
+	cout << "Введите длину трубы:";
 	cin >> p.length;
-	cout << "Введите диаметр трубы:" << endl;
+	cout << "Введите диаметр трубы:";
 	cin >> p.diametr;
 	p.status = true;
+	cout << "Данные успешно записаны" << '\n';
 	/*bool vizov1 = true;*/
 	return p;
 }
 stationproperties createstation(stationproperties st) {
-	cout << "Введите название КС:";
+	cout << '\n' << "Введите название КС:";
 	cin >> st.name;
 	cout << "Введите количество цехов:";
 	cin >> st.allcex;
 	st.workcex = st.allcex;
 	cout << "Введите класс станции:";
 	cin >> st.specification;
+	cout << "Данные успешно записаны" << '\n';
 	/*bool vizov2 = true;*/
 	return st;
 }
 void print(const pipeproperties& p, const stationproperties& st) {
 	cout << "Ваша труба и КС:" << endl;
 	if (p.empty() && st.empty()) {
-		cout << "Вы не создавали труб и КС";
+		cout << "Вы не создавали труб и КС" << endl;
+		return;
 	}			
 	if (!p.empty()) {
-		cout << "У вас есть труба." << endl;
+		cout << '\n' << "У вас есть труба." << endl;
 		cout << "Свойства трубы:" << endl;
 		cout << "1) Название: " << p.name << endl;
 		cout << "2) Длина: " << p.length << endl;
 		cout << "3) Диаметр: " << p.diametr << endl;
-		cout << "4) Статус работы " << p.status << endl;
+		cout << "4) Статус работы " << p.status << endl << '\n';
 	}
 	else {
-		cout << "Вы не создали трубу";
+		cout << '\n' << "Вы не создали трубу" << endl << '\n';
 	}
 	if (!st.empty()) {
-		cout << "Свойства КС:" << endl;
+		cout << '\n' << "Свойства КС:" << endl;
 		cout << "1) Название: " << st.name << endl;
 		cout << "2) Количество всех цехов: " << st.allcex << endl;
 		cout << "3) Количество рабочих цехов: " << st.workcex << endl;
 		cout << "4) Статус работы " << st.specification << endl;
 	}
 	else {
-		cout << "Вы не создали КС";
+		cout << "Вы не создали КС" << endl;
 	}
 }
 stationproperties st;
@@ -78,7 +81,7 @@ int main()
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 	while (true) {
-		cout << "1) Добавить трубу" << endl;
+		cout << '\n' << "1) Добавить трубу" << endl;
 		cout << "2) Добавить КС" << endl;
 		cout << "3) Просмотр всех объектов" << endl;
 		cout << "4) Редактировать трубу" << endl;
