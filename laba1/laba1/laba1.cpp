@@ -35,7 +35,7 @@ void readPositiveDouble(double& x) {
 			continue;
 		}
 		else {
-			cin.ignore(1000000, '\n');  
+			cin.ignore(1000000, '\n');
 			return;
 		}
 	}
@@ -51,7 +51,7 @@ void readPositiveInt(int& x) {
 			continue;
 		}
 		else {
-			cin.ignore(1000000, '\n'); 
+			cin.ignore(1000000, '\n');
 			return;
 		}
 	}
@@ -62,7 +62,7 @@ void readNonEmptyString(string& s) {
 	while (true) {
 		getline(cin, s);
 		int count = 0;
-		for (int i = 0;i < s.size();i++) {
+		for (int i = 0; i < s.size(); i++) {
 			if (isspace(static_cast<unsigned char>(s[i]))) {
 				count += 1;
 			}
@@ -83,7 +83,7 @@ void inputPipe(pipeproperties& p) {
 	readPositiveDouble(p.length);
 	cout << "Введите диаметр трубы:";
 	readPositiveDouble(p.diametr);
-	p.status = false;
+	p.status = true;
 	cout << "Данные успешно записаны" << '\n';
 }
 
@@ -114,7 +114,7 @@ void printPipe(const pipeproperties& p) {
 		cout << "1) Название: " << p.name << endl;
 		cout << "2) Длина: " << p.length << endl;
 		cout << "3) Диаметр: " << p.diametr << endl;
-		cout << "4) Статус: " << (p.status ? "В ремонте" : "В работе") << endl << '\n';
+		cout << "4) Статус: " << (p.status ? "В работе" : "В ремонте") << endl << '\n';
 	}
 	else {
 		cout << '\n' << "Вы не создали трубу" << endl << '\n';
@@ -133,12 +133,13 @@ void printStation(const stationproperties& st) {
 		cout << '\n' << "Вы не создали КС" << endl << '\n';
 	}
 }
+
 void editPipe(pipeproperties& p) {
 	if (p.empty()) {
 		cout << "Сначала создайте трубу!" << endl;
 		return;
 	}
-	cout << "Текущий статус: " << (p.status ? "В ремонте" : "Работает") << endl;
+	cout << "Текущий статус: " << (p.status ? "Работает" : "В ремонте") << endl;
 	cout << "1) Отправить в ремонт" << endl;
 	cout << "2) Завершить ремонт (ввести в эксплуатацию)" << endl;
 	cout << "Ваш выбор: ";
@@ -152,11 +153,11 @@ void editPipe(pipeproperties& p) {
 	}
 	cin.ignore(1000000, '\n');
 	if (choice == 1) {
-		p.status = true;
+		p.status = false;
 		cout << "Труба отправлена в ремонт." << endl;
 	}
 	else {
-		p.status = false;
+		p.status = true;
 		cout << "Ремонт завершен, труба работает." << endl;
 	}
 }
@@ -198,22 +199,62 @@ void editStation(stationproperties& st) {
 		}
 	}
 }
+
+void savePipe(ofstream& out, const pipeproperties& p) {
+	out << "Название трубы: " << p.name << "\n";
+	out << "Длина трубы: " << p.length << "\n";
+	out << "Диаметр трубы: " << p.diametr << "\n";
+	out << "Статус трубы (1-работа, 0-ремонт): " << p.status << "\n";
+}
+
+void saveStation(ofstream& out, const stationproperties& st) {
+	out << "Название КС: " << st.name << "\n";
+	out << "Количество цехов: " << st.allcex << "\n";
+	out << "Работающих цехов: " << st.workcex << "\n";
+	out << "Класс станции: " << st.specification << "\n";
+}
+
 void saveToFile(const pipeproperties& p, const stationproperties& st) {
 	ofstream out("data.txt");
 	if (!out.is_open()) {
 		cout << "Ошибка: не удалось открыть файл для записи!" << endl;
 		return;
 	}
-	out << p.name << "\n";
-	out << p.length << "\n";
-	out << p.diametr << "\n";
-	out << p.status << "\n";
-	out << st.name << "\n";
-	out << st.allcex << "\n";
-	out << st.workcex << "\n";
-	out << st.specification << "\n";
+	savePipe(out, p);
+	saveStation(out, st);
 	out.close();
 	cout << "Данные успешно сохранены в файл data.txt" << endl;
+}
+
+void loadPipe(ifstream& in, pipeproperties& p) {
+	string dummy;
+	getline(in, dummy, ':');
+	getline(in, p.name);
+	if (!p.name.empty() && p.name[0] == ' ') {
+		p.name.erase(0, 1);
+	}
+	getline(in, dummy, ':');
+	in >> p.length;
+	getline(in, dummy, ':');
+	in >> p.diametr;
+	getline(in, dummy, ':');
+	in >> p.status;
+	in.ignore(1000000, '\n');
+}
+
+void loadStation(ifstream& in, stationproperties& st) {
+	string dummy;
+	getline(in, dummy, ':');
+	getline(in, st.name);
+	if (!st.name.empty() && st.name[0] == ' ') {
+		st.name.erase(0, 1);
+	}
+	getline(in, dummy, ':');
+	in >> st.allcex;
+	getline(in, dummy, ':');
+	in >> st.workcex;
+	getline(in, dummy, ':');
+	in >> st.specification;
 }
 
 void loadFromFile(pipeproperties& p, stationproperties& st) {
@@ -222,14 +263,12 @@ void loadFromFile(pipeproperties& p, stationproperties& st) {
 		cout << "Ошибка: файл data.txt не найден! Сначала сохраните данные." << endl;
 		return;
 	}
-	getline(in, p.name);
-	in >> p.length >> p.diametr >> p.status;
-	in.ignore(1000000, '\n');
-	getline(in, st.name);
-	in >> st.allcex >> st.workcex >> st.specification;
+	loadPipe(in, p);
+	loadStation(in, st);
 	in.close();
 	cout << "Данные успешно загружены из файла!" << endl;
 }
+
 int main()
 {
 	SetConsoleOutputCP(CP_UTF8);
