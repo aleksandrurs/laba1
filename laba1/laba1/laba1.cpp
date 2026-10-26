@@ -92,16 +92,21 @@ void inputStation(stationproperties& st) {
 	readNonEmptyString(st.name);
 	cout << "Введите количество цехов:";
 	readPositiveInt(st.allcex);
-	cout << "Введите количество работающих цехов:";
+
+	cout << "Введите количество работающих цехов (от 0 до " << st.allcex << "):";
 	while (true) {
-		readPositiveInt(st.workcex);
-		if (st.workcex > st.allcex) {
-			cout << "Ошибка! Работающих цехов не может быть больше общего количества. Введите снова:" << endl;
+		cin >> st.workcex;
+		if (cin.fail() || st.workcex < 0 || st.workcex > st.allcex) {
+			cin.clear();
+			cin.ignore(1000000, '\n');
+			cout << "Ошибка! Введите число от 0 до " << st.allcex << ":" << endl;
 		}
 		else {
+			cin.ignore(1000000, '\n');
 			break;
 		}
 	}
+
 	cout << "Введите класс станции:";
 	readPositiveInt(st.specification);
 	cout << "Данные успешно записаны" << '\n';
