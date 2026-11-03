@@ -30,7 +30,7 @@ template <typename T>
 void readValue(T& val) {
 	while (true) {
 		string s;
-		getline(cin, s);
+		getline(cin, s);		
 
 		bool isEmpty = true;
 		for (int i = 0; i < s.size(); i++) {
